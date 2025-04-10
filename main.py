@@ -33,7 +33,7 @@ def add_animal(args):
     file.save_data(zoo)
 
 def remove_animal(args):
-    file = args.file
+    file = FileInputOutput(args.file)
     name = args.name
     zoo = Zoo()
     file.load_data(zoo)
