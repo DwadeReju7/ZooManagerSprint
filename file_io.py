@@ -17,13 +17,11 @@ class FileInputOutput:
                     file.write(f"{animal.name},{animal.species}\n") #format print animal object name and species
             print("Zoo File Updated") #Expected: Print to console of saved zoo data
         except FileNotFoundError as e: #Expected: Catch missing file errors and print to console for graceful error handling
-            print(f"Error with file: {e}")
+            print(f"File not Found: {e}")
         except ValueError as e: #Expected: Catch value in list errors and print to console for graceful error handling
             print(f"Improper Animal: {e}")
         except Exception as e: #Expected: General exception for errors while completing task and print to console for graceful error handling
-            print(f"Another error found when saving file: {e}")
-        finally: #Expected: Final print statement to show operation completed without run errors
-            print("Current Zoo data saved. Task complete!")
+            print(f"Unexpected Error: {e}")
 
     def load_data(self, zoo):
         """Method to load data from file and adjust animal onjects in zoo"""
@@ -47,8 +45,6 @@ class FileInputOutput:
                         print(f"Is this a new species we want to add: {species}, skipping for now") #Expected: Handle unknown species
                 print("Zoo data loaded and updated Zoo accurately") #Expected: Print to console at end of if statement
         except FileNotFoundError as e: #Expected: Catch missing file errors and print to console for graceful error handling
-            print(f"Error with file: {e}")
+            print(f"File not Found: {e}")
         except Exception as e:#Expected: General exception for errors while completing task and print to console for graceful error handling
-            print(f"Another error found when loading file: {e}")
-        finally:  #Expected: Final print statement to show operation completed without run errors
-            print("Zoo file loaded, parsed, and Zoo updated. Task Complete")
+            print(f"Unexpected Error: {e}")
