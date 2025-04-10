@@ -1,31 +1,45 @@
 #! /usr/bin/env python3
+
 from argparse import ArgumentParser
+from file_io import FileInputOutput
+from zoo import Zoo
+from animal import Animal, Bird, Cat, Dog, Reptile
 
 def list_animals(args):
-    file = args.file
-    print('zoo = file_manager.load(', file, ')')
-    print('for animal in zoo.get_animals():')
-    print('    print(str(animal))')
+    file = FileInputOutput(args.file)
+    zoo = Zoo()
+    file.load_data(zoo)
+    zoo.list_animals()
 
 def add_animal(args):
-    file = args.file
+    file = FileInputOutput(args.file)
     name = args.name
     type = args.type
-    print('zoo = file_manager.load(', file, ')')
-    print('animal = Animal(', name, type, ')')
-    print('zoo.add_animal(animal)')
-    print('file_manager.save(zoo)')
+    zoo = Zoo()
+    animal = None
+    file.load_data(zoo)
+    match type:
+        case 'bird':
+            animal = Bird(name)
+        case 'cat':
+            animal = Cat(name)
+        case 'dog':
+            animal = Dog(name)
+        case 'reptile':
+            animal = Reptile(name)
+        case _:
+            animal = Animal(name, type)
+    zoo.add_animal(animal)
+    file.save_data(zoo)
 
 def remove_animal(args):
     file = args.file
     name = args.name
-    type = args.type
-    print('zoo = file_manager.load(', file, ')')
+    zoo = Zoo()
+    file.load_data(zoo)
     if name:
-        print('zoo.remove_animal(',name,')')
-    elif type:
-        print('zoo.remove_animal(',type,')')
-    print('file_manager.save(zoo)')
+        zoo.remove_animal(name)
+    file.save_data(zoo)
 
 if __name__ == "__main__":
     parser = ArgumentParser(
@@ -40,12 +54,11 @@ if __name__ == "__main__":
 
     add_parser = subparsers.add_parser('add', help='Adds a new animal to the zoo file.')
     add_parser.add_argument('name', help='Name of the individual animal to add.')
-    add_parser.add_argument('type', help='Type of animal to add.', choices=['cat','dog','bird'])
+    add_parser.add_argument('type', help='Type of animal to add.', choices=['bird','cat','dog','reptile'])
     add_parser.set_defaults(func=add_animal)
 
-    remove_parser = subparsers.add_parser('remove', help='Remove an animal by name OR remove animals by type.')
-    remove_parser.add_argument('-n', '--name', help='Name of the individual animal to remove.')
-    remove_parser.add_argument('-t', '--type', help='Type of animals to remove.', choices=['cat','dog','bird'])
+    remove_parser = subparsers.add_parser('remove', help='Remove an animal by name.')
+    remove_parser.add_argument('name', help='Name of the individual animal to remove.')
     remove_parser.set_defaults(func=remove_animal)
 
     arguments = parser.parse_args()

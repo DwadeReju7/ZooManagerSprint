@@ -1,7 +1,7 @@
 # This code block will handle input and output functions of animal objects in zoo_data.txt
 # This code block will also use try and except blocks to ensure robust error handling 
 
-from animals import Animal
+from animal import Animal
 from zoo import Zoo 
 
 class FileInputOutput:
